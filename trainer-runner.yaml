@@ -10,7 +10,7 @@ spec:
   containers:
     - image: ivukotic/ml_platform_auto:latest
       name: ml   
-      args: ["/.run", "/ML_platform_tests/CaloGAN.sh","train.py","--output_folder=/data/CaloGAN/weights/","particles.yaml"]        
+      args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "train.py", "--output_folder=/data/CaloGAN/weights/", "particles.yaml"]        
       resources: 
         limits: 
           alpha.kubernetes.io/nvidia-gpu: 1 # requesting 1 GPU
