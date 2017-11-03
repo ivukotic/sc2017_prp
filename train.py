@@ -50,7 +50,7 @@ def get_parser():
     )
 
     parser.add_argument('--output_folder', action='store', type=string, default='/data/CaloGAN/weights/',
-                       help=='Directory to store trained weights.')
+                       help='Directory to store trained weights.')
 
     parser.add_argument('--nb-epochs', action='store', type=int, default=50,
                         help='Number of epochs to train for.')
