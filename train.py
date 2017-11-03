@@ -49,7 +49,7 @@ def get_parser():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 
-    parser.add_argument('--output_folder', action='store', type=string, default='/data/CaloGAN/weights/',
+    parser.add_argument('--output_folder', action='store', default='/data/CaloGAN/weights/',
                        help='Directory to store trained weights.')
 
     parser.add_argument('--nb-epochs', action='store', type=int, default=50,
