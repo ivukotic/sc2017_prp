@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: trainer-runner
+  labels:
+    k8s-app: CaloGAN
+  namespace: uchicago-edu
+spec:
+  restartPolicy: Never
+  containers:
+    - image: ivukotic/ml_platform_auto:latest
+      name: ml   
+      args: ["/.run", "/ML_platform_tests/CaloGAN.sh","train.py","--output_folder=/data/CaloGAN/weights/","particles.yaml"]        
+      resources: 
+        limits: 
+          alpha.kubernetes.io/nvidia-gpu: 1 # requesting 1 GPU
+      #args: ["sleep", "36500000"]
+      volumeMounts:
+      - name: nfs
+        mountPath: /data/
+        readOnly: false
+      - name: nvidia-driver
+        mountPath: /host-libs
+        readOnly: true
+  volumes:
+  - name: nfs
+    nfs:
+      server: 67.58.53.150
+      path: "/Data/PRCtutorial"
+  - name: nvidia-driver
+    hostPath:
+      path: /var/lib/nvidia-docker/volumes/nvidia_driver/384.90/lib64
