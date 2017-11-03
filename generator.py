@@ -9,14 +9,20 @@ from keras.models import Model
 from keras.layers.merge import multiply
 import keras.backend as K
 
-
 from architectures import build_generator, build_discriminator, sparse_softmax
 from ops import scale, inpainting_attention
+
+import sys
+
+if  len(sys.argv)!=3:
+    print("This program requires two parameters: inputfile - trained weights, and output file - will contain images generated.")
+    sys.exit()
 
 # showers to generate
 image_sets = 10 
 showers_to_generate = 100000
-outfile='/data/CaloGAN/outputs/dataA.h5'
+inputfile = sys.argv[1]
+outfile = sys.argv[2]
 
 latent_size = 1024 
 # input placeholders
@@ -54,7 +60,7 @@ generator_outputs = [
 generator = Model(generator_inputs, generator_outputs)
 
 # load trained weights
-generator.load_weights('../weights/gamma/params_generator_epoch_049.hdf5')
+generator.load_weights(inputfile)
 
 hdf5_file = h5py.File(outfile, mode='w')
 hdf5_file.close()

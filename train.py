@@ -49,6 +49,9 @@ def get_parser():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 
+    parser.add_argument('--output_folder', action='store', type=string, default='/data/CaloGAN/weights/',
+                       help=='Directory to store trained weights.')
+
     parser.add_argument('--nb-epochs', action='store', type=int, default=50,
                         help='Number of epochs to train for.')
 
@@ -126,6 +129,8 @@ if __name__ == '__main__':
     hander = logging.StreamHandler(sys.stdout)
     hander.setFormatter(formatter)
     logger.addHandler(hander)
+
+    output_folder = parse_args.output_folder
 
     nb_epochs = parse_args.nb_epochs
     batch_size = parse_args.batch_size
@@ -477,8 +482,8 @@ if __name__ == '__main__':
             epoch + 1, np.mean(epoch_disc_loss, axis=0)))
 
         # save weights every epoch
-        generator.save_weights('{0}{1:03d}.hdf5'.format(parse_args.g_pfx, epoch),
+        generator.save_weights(output_folder+'{0}{1:03d}.hdf5'.format(parse_args.g_pfx, epoch),
                                overwrite=True)
 
-        discriminator.save_weights('{0}{1:03d}.hdf5'.format(parse_args.d_pfx, epoch),
+        discriminator.save_weights(output_folder+'{0}{1:03d}.hdf5'.format(parse_args.d_pfx, epoch),
                                    overwrite=True)
