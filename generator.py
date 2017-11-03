@@ -9,12 +9,14 @@ from keras.models import Model
 from keras.layers.merge import multiply
 import keras.backend as K
 
-# showers to generate
-showers_to_generate = 100000
-image_sets = 10 
 
 from architectures import build_generator, build_discriminator, sparse_softmax
 from ops import scale, inpainting_attention
+
+# showers to generate
+image_sets = 10 
+showers_to_generate = 100000
+outfile='/data/CaloGAN/outputs/dataA.h5'
 
 latent_size = 1024 
 # input placeholders
@@ -54,7 +56,7 @@ generator = Model(generator_inputs, generator_outputs)
 # load trained weights
 generator.load_weights('../weights/gamma/params_generator_epoch_049.hdf5')
 
-hdf5_file = h5py.File('dataA.h5', mode='w')
+hdf5_file = h5py.File(outfile, mode='w')
 hdf5_file.close()
 
 for i in range(image_sets):
@@ -64,7 +66,7 @@ for i in range(image_sets):
     images = generator.predict([noise, sampled_energy], verbose=False)
     images = map(lambda x: np.squeeze(x * 1000), images)
     # print(len(images), images[0].shape)
-    hdf5_file = h5py.File('dataA.h5', mode='a')
+    hdf5_file = h5py.File(outfile', mode='a')
     hdf5_file.create_dataset("images"+str(i), data=images[0])
     hdf5_file.close()
 
