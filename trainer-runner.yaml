@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: trainer-runner
   labels:
-    k8s-app: CaloGAN
+    k8s-app: calogan
   namespace: uchicago-edu
 spec:
   restartPolicy: Never
