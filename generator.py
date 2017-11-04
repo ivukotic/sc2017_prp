@@ -1,9 +1,5 @@
 import h5py
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
-# import ndap
 from keras.layers import Input, Lambda, Activation, AveragePooling2D, UpSampling2D
 from keras.models import Model
 from keras.layers.merge import multiply
