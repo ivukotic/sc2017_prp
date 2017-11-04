@@ -72,7 +72,7 @@ for i in range(image_sets):
     images = generator.predict([noise, sampled_energy], verbose=False)
     images = map(lambda x: np.squeeze(x * 1000), images)
     # print(len(images), images[0].shape)
-    hdf5_file = h5py.File(outfile', mode='a')
+    hdf5_file = h5py.File(outfile, mode='a')
     hdf5_file.create_dataset("images"+str(i), data=images[0])
     hdf5_file.close()
 
