@@ -140,12 +140,12 @@ def test_flow():
     done_transfering(id)
 
 if __name__=='__main__':
-    if len(argv)!=2:
+    if len(sys.argv)!=2:
         print('Usage - sc2017.py <creator|trainer|generator|transporter>')
     else:
-        print( 'this pod will be:', argv[1] )
+        print( 'this pod will be:', sys.argv[1] )
     
-    role=argv[1]
+    role=sys.argv[1]
     if role=='creator':
         create_workload()
     elif role=='trainer':
