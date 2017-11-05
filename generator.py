@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import h5py
 import numpy as np
 from keras.layers import Input, Lambda, Activation, AveragePooling2D, UpSampling2D
