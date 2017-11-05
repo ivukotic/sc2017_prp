@@ -30,9 +30,9 @@ def create_workload():
                         doc={}
                         doc['created']=int(time()*1000)
                         doc['status']='created'
-                        doc['training_options']=['--output_folder=/data/CaloGAN/weigths/'+str(id), a, b, c, d, e]
+                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id), a, b, c, d, e]
                         doc['generating_options']=[
-                                                   '--input_folder=/data/CaloGAN/weigths/'+str(id), 
+                                                   '--input_folder=/data/CaloGAN/weights/'+str(id), 
                                                    '--output_folder=/data/CaloGAN/outputs/'+str(id), 
                                                    '--sets=10', 
                                                    '--showers=100000'
@@ -152,7 +152,16 @@ if __name__=='__main__':
         while (True):
             (id, job) = get_training_job()
             print('training job:',id, '\nsetting up:\n', job)
-            output = subprocess.check_output(['train.py']+job['training_options'])
+            print ('(re)create output directory')
+            op=job['training_options']
+            for o in op:
+                if o.startswith('--output_folder='):
+                    d = o.replace('--output_folder=','')
+                    output = subprocess.check_output(['rm', '-rf', d])
+                    print(output)
+                    output = subprocess.check_output(['mkdir', '-p', d])
+                    print(output)
+            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/train.py']+job['training_options'])
             print(output)
             done_training(id)
             sleep(15)
@@ -160,7 +169,7 @@ if __name__=='__main__':
         while (True):
             (id, job) = get_generating_job()
             print('generator job:',id, '\nsetting up:\n', job)
-            output = subprocess.check_output(['generator.py']+job['generating_options'])
+            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py']+job['generating_options'])
             print(output)
             done_generating(id)
             sleep(15)
