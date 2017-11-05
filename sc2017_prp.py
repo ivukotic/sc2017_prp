@@ -185,7 +185,7 @@ if __name__=='__main__':
             (id, job) = get_generating_job()
             print('generator job:',id, '\nsetting up:\n', job)
             g=job['generator']
-            options=[g['input_folder'], g['output_folder'], g['epochs'], g['sets'], g['showers']]
+            options=[g['input_folder'], g['output_folder'], str(g['epochs']), str(g['sets']), str(g['showers']) ]
             output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py']+options)
             print(output)
             done_generating(id)
