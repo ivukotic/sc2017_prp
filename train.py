@@ -164,9 +164,7 @@ if __name__ == '__main__':
             logger.error(exc)
             raise exc
     nb_classes = len(s.keys())
-    logger.info('{} particle types found.'.format(nb_classes))
-    for name, pth in s.iteritems():
-        logger.debug('class {} <= {}'.format(name, pth))
+    print('{} particle types found.'.format(nb_classes))
 
     def _load_data(particle, datafile):
 

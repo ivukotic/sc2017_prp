@@ -30,7 +30,8 @@ def create_workload():
                         doc={}
                         doc['created']=int(time()*1000)
                         doc['status']='created'
-                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id), a, b, c, d, e]
+                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id), a, b, c, e]
+                        if d!='': doc['training_options'].append(d)
                         doc['generating_options']=[
                                                    '--input_folder=/data/CaloGAN/weights/'+str(id), 
                                                    '--output_folder=/data/CaloGAN/outputs/'+str(id), 
@@ -158,9 +159,7 @@ if __name__=='__main__':
                 if o.startswith('--output_folder='):
                     d = o.replace('--output_folder=','')
                     output = subprocess.check_output(['rm', '-rf', d])
-                    print(output)
                     output = subprocess.check_output(['mkdir', '-p', d])
-                    print(output)
             output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/train.py']+job['training_options'])
             print(output)
             done_training(id)

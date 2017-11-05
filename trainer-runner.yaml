@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: trainer-runner-2
+  name: trainer-runner
   labels:
     k8s-app: calogan
   namespace: uchicago-edu
@@ -10,9 +10,9 @@ spec:
   containers:
     - image: ivukotic/ml_platform_auto:latest
       name: ml   
-      #args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "sc2017_prp.py", "trainer"]        
+      args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "sc2017_prp.py", "trainer"]        
       #args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "train.py", "--output_folder=/data/CaloGAN/weights/", "particles.yaml"]        
-      args: ["sleep", "36500000"]
+      #args: ["sleep", "36500000"]
       resources: 
         limits: 
           alpha.kubernetes.io/nvidia-gpu: 1 # requesting 1 GPU
