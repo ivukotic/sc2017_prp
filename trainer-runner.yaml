@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: trainer-runner-5
+  name: trainer-runner-1
   labels:
     k8s-app: calogan
   namespace: uchicago-edu

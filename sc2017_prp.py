@@ -182,7 +182,12 @@ if __name__=='__main__':
             sleep(15)
     elif role=='generator':
         while (True):
-            (id, job) = get_generating_job()
+            res = get_generating_job()
+            if not res:
+                print('waiting...')
+                sleep(120)
+                continue
+            (id, job) = res
             print('generator job:',id, '\nsetting up:\n', job)
             g=job['generator']
             options=[g['input_folder'], g['output_folder'], str(g['epochs']), str(g['sets']), str(g['showers']) ]
