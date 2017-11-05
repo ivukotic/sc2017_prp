@@ -12,15 +12,25 @@ from ops import scale, inpainting_attention
 
 import sys
 
-if  len(sys.argv)!=3:
-    print("This program requires two parameters: inputfile - trained weights, and output file - will contain images generated.")
+if  len(sys.argv)!=6:
+    print(
+"""This program requires parameters: 
+    input_folder_ - trained weights, 
+    output_folder - will contain images generated.
+    sets -
+    images -
+    epoch -
+"""
+    )
     sys.exit()
 
 # showers to generate
-image_sets = 10 
-showers_to_generate = 100000
 inputfile = sys.argv[1]
 outfile = sys.argv[2]
+image_sets = int(sys.argv[3])
+showers_to_generate = int(sys.argv[4])
+epoch = int(sys.argv[5])
+
 
 latent_size = 1024 
 # input placeholders

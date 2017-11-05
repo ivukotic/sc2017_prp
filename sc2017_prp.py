@@ -17,9 +17,9 @@ def create_workload():
     
     id=0
     
-    l0 = ['--nb-epochs=50','--nb-epochs=100','--nb-epochs=200',]
-    l1 = ['--disc-lr=0.0001','--disc-lr=0.0002','--disc-lr=0.0005']
-    l2  = ['--gen-lr=0.00001','--gen-lr=0.00002','--gen-lr=0.00005']
+    l0 = [50,100,200]
+    l1 = [0.0001,0.0002,0.0005]
+    l2  = [0.00001, 0.00002, 0.00005]
     l3    = ['', '--no-attn']
     l4    = ['gamma.yaml', 'eplus.yaml', 'pion.yaml']
     for a in l0:
@@ -30,18 +30,25 @@ def create_workload():
                         doc={}
                         doc['created']=int(time()*1000)
                         doc['status']='created'
-                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id)]
-                        if d!='': doc['training_options'].append(d)
-                        doc['training_options']+=[a, b, c, e]
-                        doc['generating_options']=[
-                                                   '--input_folder=/data/CaloGAN/weights/'+str(id), 
-                                                   '--output_folder=/data/CaloGAN/outputs/'+str(id), 
-                                                   '--sets=10', 
-                                                   '--showers=100000'
-                                                  ]
+                        doc['training']={
+                            'nb-epochs' : a,
+                            'disc-lr' : b,
+                            'gen-lr' : c,
+                            'particle' : e,
+                            'output_folder':'/data/CaloGAN/weights/'+str(id)
+                        }
+                        if d!='': doc['training']['options'] = d
+                        doc['generator']={
+                            'input_folder':'/data/CaloGAN/weights/'+str(id), 
+                            'output_folder':'/data/CaloGAN/outputs/'+str(id), 
+                            'epochs' : a,
+                            'sets' : 10, 
+                            'showers' : 100000
+                        }
                         id+=1
 #                         print(doc)
                         es.create(index=index_name, doc_type='doc', id=id, body=doc)
+
 
 def get_training_job():
     my_query={
@@ -154,14 +161,22 @@ if __name__=='__main__':
         while (True):
             (id, job) = get_training_job()
             print('training job:',id, '\nsetting up:\n', job)
+            op=job['training']
+            
             print ('(re)create output directory')
-            op=job['training_options']
-            for o in op:
-                if o.startswith('--output_folder='):
-                    d = o.replace('--output_folder=','')
-                    output = subprocess.check_output(['rm', '-rf', d])
-                    output = subprocess.check_output(['mkdir', '-p', d])
-            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/train.py']+job['training_options'])
+            output = subprocess.check_output(['rm', '-rf', op['output_folder']])
+            output = subprocess.check_output(['mkdir', '-p', op['output_folder']])
+
+            options=[]
+            options.append( '--output_folder=' + op['output_folder'] )
+            options.append( '--nb-epochs=' + str(op['nb-epochs']) )
+            options.append( '--disc-lr=' + str(op['disc-lr']) )
+            options.append( '--gen-lr=' + str(op['gen-lr']) )
+            if 'options' in op: 
+                options.append( op['options'] )
+            options.append( op['particle'] )
+            print(options)
+            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/train.py'] + options)
             print(output)
             done_training(id)
             sleep(15)
@@ -169,7 +184,9 @@ if __name__=='__main__':
         while (True):
             (id, job) = get_generating_job()
             print('generator job:',id, '\nsetting up:\n', job)
-            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py']+job['generating_options'])
+            g=job['generator']
+            options=[g['input_folder'], g['output_folder'], g['epochs'], g['sets'], g['showers']]
+            output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py']+options)
             print(output)
             done_generating(id)
             sleep(15)

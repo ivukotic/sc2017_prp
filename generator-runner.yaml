@@ -1,19 +1,23 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: generator-runner
+  name: generator-runner-1
   labels:
     k8s-app: calogan
   namespace: uchicago-edu
 spec:
   restartPolicy: Never
   containers:
-    - image: ivukotic/ml_platform_auto:latest
-      name: ml   
-      args: ["/.run", "/ML_platform_tests/CaloGAN.sh","generator.py","/data/CaloGAN/weights/params_generator_epoch_$(EPOCH).hdf5", "/data/CaloGAN/outputs/images_$(EPOCH).h5"]        
+    - name: ml   
+      image: ivukotic/ml_platform_auto:latest
+      args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "sc2017_prp.py", "generator"]     
+      # args: ["/.run", "/ML_platform_tests/CaloGAN.sh","generator.py","/data/CaloGAN/weights/params_generator_epoch_$(EPOCH).hdf5", "/data/CaloGAN/outputs/images_$(EPOCH).h5"]        
       resources: 
         limits: 
-          alpha.kubernetes.io/nvidia-gpu: 1 # requesting 1 GPU
+          alpha.kubernetes.io/nvidia-gpu: 1 # requesting 1 GPU          
+          memory: "10Gi"
+        requests:
+          memory: "5Gi"
       #args: ["sleep", "36500000"]
       volumeMounts:
       - name: nfs
