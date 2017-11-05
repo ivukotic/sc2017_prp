@@ -30,8 +30,9 @@ def create_workload():
                         doc={}
                         doc['created']=int(time()*1000)
                         doc['status']='created'
-                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id), a, b, c, e]
+                        doc['training_options']=['--output_folder=/data/CaloGAN/weights/'+str(id)]
                         if d!='': doc['training_options'].append(d)
+                        doc['training_options']+=[a, b, c, e]
                         doc['generating_options']=[
                                                    '--input_folder=/data/CaloGAN/weights/'+str(id), 
                                                    '--output_folder=/data/CaloGAN/outputs/'+str(id), 
