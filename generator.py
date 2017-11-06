@@ -17,9 +17,9 @@ if  len(sys.argv)!=6:
 """This program requires parameters: 
     input_folder_ - trained weights, 
     output_folder - will contain images generated.
+    epoch -
     sets -
     images -
-    epoch -
 """
     )
     sys.exit()
@@ -27,9 +27,9 @@ if  len(sys.argv)!=6:
 # showers to generate
 input_folder = sys.argv[1]
 output_folder = sys.argv[2]
-image_sets = int(sys.argv[3])
-showers_to_generate = int(sys.argv[4])
-epochs = int(sys.argv[5])
+epochs = int(sys.argv[3])
+image_sets = int(sys.argv[4])
+showers_to_generate = int(sys.argv[5])
 
 for epoch in range(epochs):
 

@@ -26,6 +26,8 @@ spec:
       - name: nvidia-driver
         mountPath: /host-libs
         readOnly: true
+      - name: calogan-store
+        mountPath: /data-rook
   volumes:
   - name: nfs
     nfs:
@@ -34,3 +36,10 @@ spec:
   - name: nvidia-driver
     hostPath:
       path: /var/lib/nvidia-docker/volumes/nvidia_driver/384.90/lib64
+  - name: calogan-store
+    flexVolume:
+      driver: rook.io/rook
+      fsType: ceph
+      options:
+        fsName: calogan-fs # name of the filesystem specified in the filesystem CRD.
+        clusterName: rook # namespace where the Rook cluster is deployed

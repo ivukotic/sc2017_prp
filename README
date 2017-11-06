@@ -1,0 +1,18 @@
+Create rook storage:
+kubectl create -f rook-fs.yaml
+
+Check rook status:
+kubectl -n rook exec -it rook-tools bash
+rookctl status
+
+Run trainer:
+kubectl create -f trainer-runner.yaml
+
+Run generator:
+kubectl create -f generator-runner.yaml
+
+Run transporter:
+
+
+Kill all pods:
+kubectl delete pods -l k8s-app:calogan
