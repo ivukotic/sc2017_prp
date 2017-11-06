@@ -160,7 +160,7 @@ if __name__=='__main__':
     elif role=='trainer':
         while (True):
             res = get_training_job()
-             if not res:
+            if not res:
                 print('waiting...')
                 sleep(120)
                 continue
