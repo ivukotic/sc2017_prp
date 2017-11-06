@@ -70,7 +70,7 @@ for epoch in range(epochs):
     e='{:03d}'.format(epoch)
     generator.load_weights(input_folder + '/params_generator_epoch_' + e + '.hdf5')
 
-    outfile = out_folder + '/images_' + e + '.hdf5'
+    outfile = output_folder + '/images_' + e + '.hdf5'
     hdf5_file = h5py.File(outfile, mode='w')
     hdf5_file.close()
 
