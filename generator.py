@@ -31,7 +31,7 @@ image_sets = int(sys.argv[3])
 showers_to_generate = int(sys.argv[4])
 epochs = int(sys.argv[5])
 
-for epoch in epochs:
+for epoch in range(epochs):
 
     latent_size = 1024 
     # input placeholders

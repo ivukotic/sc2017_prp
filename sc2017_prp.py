@@ -159,7 +159,12 @@ if __name__=='__main__':
         create_workload()
     elif role=='trainer':
         while (True):
-            (id, job) = get_training_job()
+            res = get_training_job()
+             if not res:
+                print('waiting...')
+                sleep(120)
+                continue
+            (id, job) = res
             print('training job:',id, '\nsetting up:\n', job)
             op=job['training']
             
@@ -197,7 +202,12 @@ if __name__=='__main__':
             sleep(15)
     elif role=='transporter':
         while (True):
-            (id, job) = get_transfering_job()
+            res = get_transfering_job()
+            if not res:
+                print('waiting...')
+                sleep(120)
+                continue
+            (id, job) = res
             print('transporter job:',id, '\nsetting up:\n', job)
             output = subprocess.check_output(['xrdcp ']+job['transfering_options'])
             print(output)
