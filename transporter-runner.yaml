@@ -19,16 +19,11 @@ spec:
           memory: "1Gi"
       #args: ["sleep", "36500000"]
       volumeMounts:
-      - name: nfs
-        mountPath: /data/
-        readOnly: false
       - name: calogan-store
         mountPath: /data-rook
+  nodeSelector:
+    kubernetes.io/hostname: k8s-gpu-02.calit2.optiputer.net
   volumes:
-  - name: nfs
-    nfs:
-      server: 67.58.53.150
-      path: "/Data/PRCtutorial"
   - name: calogan-store
     flexVolume:
       driver: rook.io/rook

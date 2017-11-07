@@ -214,7 +214,7 @@ if __name__=='__main__':
             (id, job) = res
             print('transporter job:',id, '\nsetting up:\n', job)
             output_folder=job['generator']['output_folder']
-            output = subprocess.check_output( ['xrdcp', '--recursive ', output_folder] + job['transferring_options'] )
+            output = subprocess.check_output( ['xrdcp', '--recursive ', output_folder, job['transferring_options'] ] )
             print(output)
             done_transfering(id)
             sleep(60)
