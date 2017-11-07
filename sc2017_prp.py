@@ -45,7 +45,7 @@ def create_workload():
                             'sets' : 10, 
                             'showers' : 100000
                         }
-                        doc['transferring_options']=['root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic']
+                        doc['transferring_options']=['root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic/outputs/'+str(id)]
 #                         print(doc)
                         es.create(index=index_name, doc_type='doc', id=id, body=doc)
                         id+=1
