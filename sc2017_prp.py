@@ -45,6 +45,7 @@ def create_workload():
                             'sets' : 10, 
                             'showers' : 100000
                         }
+                        doc['transferring_options']=['root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic']
 #                         print(doc)
                         es.create(index=index_name, doc_type='doc', id=id, body=doc)
                         id+=1
@@ -212,7 +213,8 @@ if __name__=='__main__':
                 continue
             (id, job) = res
             print('transporter job:',id, '\nsetting up:\n', job)
-            output = subprocess.check_output(['xrdcp ']+job['transfering_options'])
+            output_folder=job['generator']['output_folder']
+            output = subprocess.check_output( ['xrdcp', '--recursive ', output_folder] + job['transferring_options'] )
             print(output)
             done_transfering(id)
-            sleep(15)
+            sleep(60)
