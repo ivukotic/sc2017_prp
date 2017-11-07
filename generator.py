@@ -62,12 +62,11 @@ generator_outputs = [
     Activation('relu')(img_layer2)
 ]
 
+# build the actual model
+generator = Model(generator_inputs, generator_outputs)
 
 for epoch in range(epochs):
     print('epoch',epoch)
-
-    # build the actual model
-    generator = Model(generator_inputs, generator_outputs)
 
     # load trained weights
     e='{:03d}'.format(epoch)
@@ -79,14 +78,14 @@ for epoch in range(epochs):
 
     for i in range(image_sets):
         print('set:',i)
-        
+
         noise = np.random.normal(0, 1, (showers_to_generate, latent_size))
         sampled_energy = np.random.uniform(1, 100, (showers_to_generate, 1))
 
         images = generator.predict([noise, sampled_energy], verbose=False)
         images = map(lambda x: np.squeeze(x * 1000), images)
         # print(len(images), images[0].shape)
-        hdf5_file = h5py.File(outfile, mode='a')
-        hdf5_file.create_dataset("set_"+str(i), data=images[0])
-        hdf5_file.close()
+        afile = h5py.File(outfile, mode='a')
+        afile.create_dataset("set_"+str(i), data=images[0])
+        afile.close()
 
