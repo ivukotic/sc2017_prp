@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: trainer-runner-5
+  name: trainer-runner-8
   labels:
     k8s-app: calogan
+    calogan: trainer
   namespace: uchicago-edu
 spec:
   restartPolicy: Never
@@ -11,7 +12,6 @@ spec:
     - name: ml   
       image: ivukotic/ml_platform_auto:latest
       args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "sc2017_prp.py", "trainer"]        
-      #args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "train.py", "--output_folder=/data/CaloGAN/weights/", "particles.yaml"]        
       #args: ["sleep", "36500000"]
       resources: 
         limits: 

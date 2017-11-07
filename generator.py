@@ -31,37 +31,40 @@ epochs = int(sys.argv[3])
 image_sets = int(sys.argv[4])
 showers_to_generate = int(sys.argv[5])
 
+
+latent_size = 1024 
+# input placeholders
+latent = Input(shape=(latent_size, ), name='z') # noise
+input_energy = Input(shape=(1, ), dtype='float32') # requested energy of the particle shower
+generator_inputs = [latent, input_energy]
+
+# multiply the (scaled) energy into the latent space
+h = Lambda(lambda x: x[0] * x[1])([latent, scale(input_energy, 100)])
+
+# build three LAGAN-style generators (checkout out `build_generator` in architectures.py)
+img_layer0 = build_generator(h, 3, 96)
+img_layer1 = build_generator(h, 12, 12)
+img_layer2 = build_generator(h, 12, 6)
+
+# inpainting
+# 0 --> 1
+zero2one = AveragePooling2D(pool_size=(1, 8))( UpSampling2D(size=(4, 1))(img_layer0))
+img_layer1 = inpainting_attention(img_layer1, zero2one) # this function is in ops.py
+# 1 --> 2
+one2two = AveragePooling2D(pool_size=(1, 2))(img_layer1)
+img_layer2 = inpainting_attention(img_layer2, one2two)
+# ^^ pooling and upsampling are needed to reshape images to same dimensions
+
+# outputs
+generator_outputs = [
+    Activation('relu')(img_layer0),
+    Activation('relu')(img_layer1),
+    Activation('relu')(img_layer2)
+]
+
+
 for epoch in range(epochs):
-
-    latent_size = 1024 
-    # input placeholders
-    latent = Input(shape=(latent_size, ), name='z') # noise
-    input_energy = Input(shape=(1, ), dtype='float32') # requested energy of the particle shower
-    generator_inputs = [latent, input_energy]
-
-    # multiply the (scaled) energy into the latent space
-    h = Lambda(lambda x: x[0] * x[1])([latent, scale(input_energy, 100)])
-
-    # build three LAGAN-style generators (checkout out `build_generator` in architectures.py)
-    img_layer0 = build_generator(h, 3, 96)
-    img_layer1 = build_generator(h, 12, 12)
-    img_layer2 = build_generator(h, 12, 6)
-
-    # inpainting
-    # 0 --> 1
-    zero2one = AveragePooling2D(pool_size=(1, 8))( UpSampling2D(size=(4, 1))(img_layer0))
-    img_layer1 = inpainting_attention(img_layer1, zero2one) # this function is in ops.py
-    # 1 --> 2
-    one2two = AveragePooling2D(pool_size=(1, 2))(img_layer1)
-    img_layer2 = inpainting_attention(img_layer2, one2two)
-    # ^^ pooling and upsampling are needed to reshape images to same dimensions
-
-    # outputs
-    generator_outputs = [
-        Activation('relu')(img_layer0),
-        Activation('relu')(img_layer1),
-        Activation('relu')(img_layer2)
-    ]
+    print('epoch',epoch)
 
     # build the actual model
     generator = Model(generator_inputs, generator_outputs)
@@ -75,6 +78,8 @@ for epoch in range(epochs):
     hdf5_file.close()
 
     for i in range(image_sets):
+        print('set:',i)
+        
         noise = np.random.normal(0, 1, (showers_to_generate, latent_size))
         sampled_energy = np.random.uniform(1, 100, (showers_to_generate, 1))
 

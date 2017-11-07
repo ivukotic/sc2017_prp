@@ -45,9 +45,9 @@ def create_workload():
                             'sets' : 10, 
                             'showers' : 100000
                         }
-                        id+=1
 #                         print(doc)
                         es.create(index=index_name, doc_type='doc', id=id, body=doc)
+                        id+=1
 
 
 def get_training_job():
@@ -198,6 +198,7 @@ if __name__=='__main__':
             output = subprocess.check_output(['rm', '-rf', g['output_folder']])
             output = subprocess.check_output(['mkdir', '-p', g['output_folder']])
             options=[g['input_folder'], g['output_folder'], str(g['epochs']), str(g['sets']), str(g['showers']) ]
+            print(options)
             output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py']+options)
             print(output)
             done_generating(id)
