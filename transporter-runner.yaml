@@ -22,7 +22,9 @@ spec:
       - name: calogan-store
         mountPath: /data-rook
   nodeSelector:
-    kubernetes.io/hostname: k8s-gpu-02.calit2.optiputer.net
+    kubernetes.io/hostname: k8s-gpu-01.calit2.optiputer.net
+    #k8s-gpu-02.calit2.optiputer.net
+    #fiona8.calit2.uci.edu 
   volumes:
   - name: calogan-store
     flexVolume:

@@ -45,7 +45,7 @@ def create_workload():
                             'sets' : 10, 
                             'showers' : 100000
                         }
-                        doc['transferring_options']=['root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic/outputs/'+str(id)]
+                        doc['transferring_options']='root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic/outputs/'+str(id)
 #                         print(doc)
                         es.create(index=index_name, doc_type='doc', id=id, body=doc)
                         id+=1
@@ -125,6 +125,15 @@ def done_generating(id):
 def done_transfering(id):
     res={'status':'transfered', 'end_transfering':int(time()*1000) }
     es.update(index=index_name, doc_type='doc', id=id, body={"doc":res})
+
+def set_status(id, new_status):
+    res={'status':new_status }
+    es.update(index=index_name, doc_type='doc', id=id, body={"doc":res})
+    
+def set_transferring_options(id):
+    res={'transferring_options': 'root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic/outputs/'+str(id) }
+    es.update(index=index_name, doc_type='doc', id=id, body={"doc":res})
+
 
 def test_flow():
     

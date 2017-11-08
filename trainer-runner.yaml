@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: trainer-runner-8
+  name: trainer-runner-16
   labels:
     k8s-app: calogan
     calogan: trainer
