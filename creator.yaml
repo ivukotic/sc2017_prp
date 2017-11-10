@@ -21,10 +21,6 @@ spec:
       volumeMounts:
       - name: calogan-store
         mountPath: /data-rook
-  nodeSelector:
-    kubernetes.io/hostname: fiona8.calit2.uci.edu 
-    #k8s-gpu-02.calit2.optiputer.net
-    #fiona8.calit2.uci.edu 
   volumes:
   - name: calogan-store
     flexVolume:
@@ -33,3 +29,5 @@ spec:
       options:
         fsName: calogan-fs # name of the filesystem specified in the filesystem CRD.
         clusterName: rook # namespace where the Rook cluster is deployed
+  nodeSelector:
+    sc2017: da

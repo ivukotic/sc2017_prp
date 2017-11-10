@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: generator-runner-1
+  name: generator-runner-6
   labels:
     k8s-app: calogan
     calogan: generator

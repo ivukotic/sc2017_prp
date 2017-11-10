@@ -31,8 +31,8 @@ def create_workload():
                     doc = {}
                     doc['created'] = int(time() * 1000)
                     doc['status'] = 'created'
+                    doc['epochs'] = a
                     doc['training'] = {
-                        'nb-epochs': a,
                         'disc-lr': b,
                         'gen-lr': c,
                         'particle': e,
@@ -42,11 +42,10 @@ def create_workload():
                     #     doc['training']['options'] = d
                     doc['generator'] = {
                         'input_folder': '/data-rook/CaloGAN/weights/' + str(id),
-                        'output_folder': '/data-rook/CaloGAN/outputs/' + str(id),
-                        'epochs': a,
-                        'sets': 10,
-                        'showers': 100000
+                        'output_folder': '/data-rook/CaloGAN/outputs/' + str(id)
                     }
+                    doc['generator_sets'] = 10
+                    doc['generator_showers'] = 100000
                     doc['transferring_options'] = 'root://faxbox.usatlas.org:1094//faxbox2/user/ivukotic/outputs/' + str(id)
 
                     es.create(index=index_name, doc_type='doc', id=id, body=doc)
@@ -193,7 +192,7 @@ if __name__ == '__main__':
 
             options = []
             options.append('--output_folder=' + op['output_folder'])
-            options.append('--nb-epochs=' + str(op['nb-epochs']))
+            options.append('--nb-epochs=' + str(job['epochs']))
             options.append('--disc-lr=' + str(op['disc-lr']))
             options.append('--gen-lr=' + str(op['gen-lr']))
             if 'options' in op:
@@ -216,7 +215,7 @@ if __name__ == '__main__':
             g = job['generator']
             output = subprocess.check_output(['rm', '-rf', g['output_folder']])
             output = subprocess.check_output(['mkdir', '-p', g['output_folder']])
-            options = [g['input_folder'], g['output_folder'], str(g['epochs']), str(g['sets']), str(g['showers'])]
+            options = [g['input_folder'], g['output_folder'], str(job['epochs']), str(job['generator_sets']), str(job['generator_showers'])]
             print(options)
             output = subprocess.check_output(['/ML_platform_tests/tutorial/sc2017_prp/generator.py'] + options)
             print(output)
