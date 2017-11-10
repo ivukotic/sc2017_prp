@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: trainer-runner-16
+  name: trainer-runner-2
   labels:
     k8s-app: calogan
     calogan: trainer
@@ -43,3 +43,6 @@ spec:
       options:
         fsName: calogan-fs # name of the filesystem specified in the filesystem CRD.
         clusterName: rook # namespace where the Rook cluster is deployed
+  nodeSelector:
+    sc2017: da
+

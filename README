@@ -23,3 +23,8 @@ kubectl delete pods -l calogan=trainer
 Clean up:
 kubectl create pod -f cleaner.yaml
 
+Label working nodes:
+kubectl label --overwrite nodes k8s-gpu-01.calit2.optiputer.net sc2017=da
+kubectl label --overwrite nodes k8s-gpu-02.calit2.optiputer.net sc2017=da
+kubectl label --overwrite nodes k8s-gpu-03.calit2.optiputer.net sc2017=da
+kubectl label --overwrite nodes fiona8.calit2.uci.edu sc2017=ne

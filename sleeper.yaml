@@ -1,26 +1,24 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: transporter-runner-1
+  name: sleeper-runner
   labels:
     k8s-app: calogan
-    calogan: transporter
+    calogan: sleeper
   namespace: uchicago-edu
 spec:
   restartPolicy: Never
   containers:
     - name: ml   
       image: ivukotic/ml_platform_auto:latest
-      args: ["/.run", "/ML_platform_tests/CaloGAN.sh", "sc2017_prp.py", "transporter"]     
-      resources: 
-        limits:   
-          memory: "2Gi"
-        requests:
-          memory: "1Gi"
-      #args: ["sleep", "36500000"]
+      args: ["sleep", "36500000"]
       volumeMounts:
       - name: calogan-store
         mountPath: /data-rook
+  # nodeSelector:
+  #   kubernetes.io/hostname: fiona8.calit2.uci.edu 
+  #   #k8s-gpu-02.calit2.optiputer.net
+  #   #fiona8.calit2.uci.edu 
   volumes:
   - name: calogan-store
     flexVolume:
@@ -29,5 +27,3 @@ spec:
       options:
         fsName: calogan-fs # name of the filesystem specified in the filesystem CRD.
         clusterName: rook # namespace where the Rook cluster is deployed
-  nodeSelector:
-    sc2017: da
