@@ -15,4 +15,11 @@ Run transporter:
 
 
 Kill all pods:
-kubectl delete pods -l k8s-app:calogan
+kubectl delete pods -l k8s-app=calogan
+
+Kill training pods:
+kubectl delete pods -l calogan=trainer
+
+Clean up:
+kubectl create pod -f cleaner.yaml
+
